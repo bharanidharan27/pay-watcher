@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Pay Watcher">
+    <title>Pay Watcher</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="assets/icon.svg">
+    <link rel="stylesheet" href="src/styles.css">
+    <script type="module" src="src/app.js"></script>
+  </head>
+  <body>
+    <svg aria-hidden="true" class="icon-sprite">
+      <symbol id="icon-wallet" viewBox="0 0 24 24">
+        <path d="M4.5 6.5h13A2.5 2.5 0 0 1 20 9v8.5a2 2 0 0 1-2 2H5a2.5 2.5 0 0 1-2.5-2.5V7.25A2.25 2.25 0 0 1 4.75 5h11.5" />
+        <path d="M16 12.5h4v3h-4.25a1.5 1.5 0 0 1 0-3H16Z" />
+      </symbol>
+      <symbol id="icon-plus" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12h14" />
+      </symbol>
+      <symbol id="icon-download" viewBox="0 0 24 24">
+        <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 20h14" />
+      </symbol>
+      <symbol id="icon-upload" viewBox="0 0 24 24">
+        <path d="M12 21V9m0 0 4 4m-4-4-4 4M5 4h14" />
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24">
+        <path d="m20 20-4.25-4.25M10.75 18a7.25 7.25 0 1 1 0-14.5 7.25 7.25 0 0 1 0 14.5Z" />
+      </symbol>
+      <symbol id="icon-edit" viewBox="0 0 24 24">
+        <path d="m4 17.5-.75 3.25L6.5 20 18.75 7.75a2.12 2.12 0 0 0-3-3L3.5 17Z" />
+        <path d="m14.5 6 3.5 3.5" />
+      </symbol>
+      <symbol id="icon-trash" viewBox="0 0 24 24">
+        <path d="M5 7h14M10 11v6m4-6v6M8 7l.75 12.25A2 2 0 0 0 10.75 21h2.5a2 2 0 0 0 2-1.75L16 7M9.5 7l.75-3h3.5l.75 3" />
+      </symbol>
+      <symbol id="icon-x" viewBox="0 0 24 24">
+        <path d="m6 6 12 12M18 6 6 18" />
+      </symbol>
+    </svg>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <img src="assets/icon.svg" alt="" width="44" height="44">
+          <div>
+            <h1>Pay Watcher</h1>
+            <p>Family cards</p>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="secondary-button" id="exportCsvButton" type="button" title="Export CSV">
+            <svg><use href="#icon-download"></use></svg>
+            <span>CSV</span>
+          </button>
+          <button class="secondary-button" id="exportJsonButton" type="button" title="Export JSON">
+            <svg><use href="#icon-download"></use></svg>
+            <span>JSON</span>
+          </button>
+          <button class="secondary-button" id="importButton" type="button" title="Import JSON">
+            <svg><use href="#icon-upload"></use></svg>
+            <span>Import</span>
+          </button>
+          <input id="importFile" type="file" accept="application/json,.json" hidden>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <section class="panel entry-panel" aria-labelledby="entryTitle">
+          <div class="section-heading">
+            <h2 id="entryTitle">Log transaction</h2>
+            <button class="ghost-button is-hidden" id="cancelEditButton" type="button">
+              <svg><use href="#icon-x"></use></svg>
+              <span>Cancel</span>
+            </button>
+          </div>
+
+          <form id="transactionForm" class="entry-form">
+            <input type="hidden" name="id" id="transactionId">
+            <input type="hidden" name="createdAt" id="transactionCreatedAt">
+
+            <label class="field wide-field">
+              <span>Merchant</span>
+              <input name="merchant" id="merchantInput" autocomplete="organization" required>
+            </label>
+
+            <label class="field">
+              <span>Amount</span>
+              <input name="amount" id="amountInput" type="number" min="0.01" step="0.01" inputmode="decimal" required>
+            </label>
+
+            <label class="field">
+              <span>Date</span>
+              <input name="date" id="dateInput" type="date" required>
+            </label>
+
+            <label class="field">
+              <span>Card</span>
+              <input name="card" id="cardInput" list="cardOptions" autocomplete="off">
+              <datalist id="cardOptions"></datalist>
+            </label>
+
+            <label class="field">
+              <span>Category</span>
+              <input name="category" id="categoryInput" list="categoryOptions" autocomplete="off">
+              <datalist id="categoryOptions"></datalist>
+            </label>
+
+            <label class="field wide-field">
+              <span>Note</span>
+              <input name="note" id="noteInput" autocomplete="off">
+            </label>
+
+            <button class="primary-button wide-field" type="submit">
+              <svg><use href="#icon-plus"></use></svg>
+              <span id="submitLabel">Add</span>
+            </button>
+          </form>
+        </section>
+
+        <div class="main-column">
+          <section class="summary-grid" aria-label="Summary">
+            <div class="summary-tile">
+              <span>Filtered spend</span>
+              <strong id="totalAmount">$0.00</strong>
+            </div>
+            <div class="summary-tile">
+              <span>Entries</span>
+              <strong id="entryCount">0</strong>
+            </div>
+            <div class="summary-tile">
+              <span>Top card</span>
+              <strong id="topCard">None</strong>
+            </div>
+          </section>
+
+          <section class="panel ledger-panel" aria-labelledby="ledgerTitle">
+            <div class="section-heading ledger-heading">
+              <div>
+                <h2 id="ledgerTitle">Ledger</h2>
+                <output id="filterCount">0 transactions</output>
+              </div>
+              <button class="ghost-button" id="clearFiltersButton" type="button">
+                <svg><use href="#icon-x"></use></svg>
+                <span>Clear</span>
+              </button>
+            </div>
+
+            <div class="filters" aria-label="Filters">
+              <label class="search-field">
+                <span class="visually-hidden">Search</span>
+                <svg><use href="#icon-search"></use></svg>
+                <input id="searchInput" type="search" placeholder="Search merchant, card, note">
+              </label>
+
+              <label class="field compact-field">
+                <span>Card</span>
+                <select id="cardFilter"></select>
+              </label>
+
+              <label class="field compact-field">
+                <span>Category</span>
+                <select id="categoryFilter"></select>
+              </label>
+
+              <label class="field compact-field">
+                <span>From</span>
+                <input id="fromFilter" type="date">
+              </label>
+
+              <label class="field compact-field">
+                <span>To</span>
+                <input id="toFilter" type="date">
+              </label>
+            </div>
+
+            <div class="transaction-table" role="table" aria-label="Transactions">
+              <div class="table-head" role="row">
+                <span role="columnheader">Date</span>
+                <span role="columnheader">Merchant</span>
+                <span role="columnheader">Amount</span>
+                <span role="columnheader">Card</span>
+                <span role="columnheader">Category</span>
+                <span role="columnheader">Note</span>
+                <span role="columnheader">Actions</span>
+              </div>
+              <div id="transactionList"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "pay-watcher",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "verify:browser": "node scripts/verify-browser.mjs",
+    "serve": "node server.js"
+  }
+}

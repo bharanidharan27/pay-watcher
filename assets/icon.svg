@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Pay Watcher">
+  <rect width="128" height="128" rx="24" fill="#ffffff"/>
+  <rect x="18" y="24" width="92" height="80" rx="16" fill="#0b1f1a"/>
+  <path d="M32 44h57a13 13 0 0 1 13 13v31H36a14 14 0 0 1-14-14V54a10 10 0 0 1 10-10Z" fill="#effaf5"/>
+  <path d="M78 65h26v17H78a8.5 8.5 0 0 1 0-17Z" fill="#00a879"/>
+  <circle cx="80" cy="73.5" r="4" fill="#ffffff"/>
+  <path d="M36 58h28M36 72h19M36 86h34" stroke="#0b1f1a" stroke-width="7" stroke-linecap="round"/>
+  <path d="M93 35 106 22" stroke="#e95f4a" stroke-width="8" stroke-linecap="round"/>
+</svg>
