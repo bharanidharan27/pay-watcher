@@ -26,4 +26,4 @@ When hosted, a Shortcut can open a URL like this to add a transaction:
 https://your-site.example/?merchant=Metro&amount=8.50&card=Mom%20Visa&category=Transit
 ```
 
-The app stores data in the iPhone browser profile, so keep JSON backups before clearing Safari data or moving phones.
+The app stores data in the iPhone browser profile, so keep JSON backups before clearing Safari data or moving phones
